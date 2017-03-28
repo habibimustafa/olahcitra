@@ -1,0 +1,237 @@
+
+<!doctype HTML>
+<html>
+<head>
+	<title>Pengolahan Citra Digital ~ Habibi Mustafa</title>
+	<meta name="charset" content="utf-8">
+	<link rel="stylesheet" type="text/css" href="css/bootstrap.css">
+	<!-- <link rel="stylesheet" type="text/css" href="css/bootstrap-theme.css"> -->
+	<link rel="stylesheet" type="text/css" href="css/jquery.Jcrop.min.css">
+	<link rel="stylesheet" type="text/css" href="css/citra.css">
+</head>
+<body>
+	<nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+		<div class="container">
+			<!-- Brand and toggle get grouped for better mobile display -->
+			<div class="navbar-header">
+				<button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-ex1-collapse">
+					<span class="sr-only">Toggle navigation</span>
+					<span class="icon-bar"></span>
+					<span class="icon-bar"></span>
+					<span class="icon-bar"></span>
+				</button>
+				<a class="navbar-brand" href="./">PCD</a>
+			</div>
+
+			<!-- Collect the nav links, forms, and other content for toggling -->
+			<div class="collapse navbar-collapse navbar-ex1-collapse">
+				<form class="navbar-form navbar-left form-inline" role="search">
+					<div class="form-group">
+						<input type="file" id="imgFile" class="form-control">
+					</div>
+				</form>
+				<ul class="nav navbar-nav">
+					<li class="dropdown">
+						<a href="#" class="dropdown-toggle" data-toggle="dropdown">Operasi Titik <b class="caret"></b></a>
+						<ul class="dropdown-menu">
+							<li><a href="#imgInverse()">Citra Negatif</a></li>
+							<li><a href="#imgGrayscale()">Citra Keabuan</a></li>
+							<li><a href="#imgBinary()">Citra Biner</a></li>
+							<li><a href="#imgBinaryNot()">Citra NOT</a></li>
+							<li><a href="#imgBinaryRed()">Citra Red</a></li>
+							<li><a href="#imgBinaryGreen()">Citra Green</a></li>
+							<li><a href="#imgBinaryBlue()">Citra Blue</a></li>
+							<li><a href="#imgSepia()">Citra Sepia</a></li>
+							<li><a href="#imgSolarize()">Citra Solarize</a></li>
+						</ul>
+					</li>
+					<li class="dropdown">
+						<a href="#" class="dropdown-toggle" data-toggle="dropdown">Flipping <b class="caret"></b></a>
+						<ul class="dropdown-menu">
+							<li><a href="#flip_horizontal()">Flip Horizontal</a></li>
+							<li><a href="#flip_vertikal()">Flip Vertikal</a></li>
+							<li><a href="#flip_all()">Flip All</a></li>
+						</ul>
+					</li>
+					<li class="dropdown">
+						<a href="#" class="dropdown-toggle" data-toggle="dropdown">Filtering <b class="caret"></b></a>
+						<ul class="dropdown-menu">
+							<li><a href="#filter_gaussian(2)">Gaussian Blur</a></li>
+							<li><a href="#filter_sharpen()">Sharpen</a></li>
+							<li><a href="#filter_soften()">Soften</a></li>
+						</ul>
+					</li>
+					<li class="dropdown">
+						<a href="#" class="dropdown-toggle" data-toggle="dropdown">Deteksi Tepi <b class="caret"></b></a>
+						<ul class="dropdown-menu">
+							<li><a href="#tepi_robert()">Operasi Robert</a></li>
+							<li><a href="#tepi_sobel()">Operasi Sobel</a></li>
+							<li><a href="#tepi_prewitt()">Operasi Prewitt</a></li>
+							<!-- <li><a href="#tepi_laplace()">Operasi Laplace</a></li> -->
+						</ul>
+					</li>
+					<li><a href="#histogram()">Histogram</a></li>
+				</ul>
+				<ul class="nav navbar-nav navbar-right">
+					<!-- <li><a>Progress: <span class="percent">0%</span></a></li> -->
+					<li><a href="#imgReset()">Reset</a></li>
+				</ul>
+			</div><!-- /.navbar-collapse -->
+		</div>
+	</nav>
+
+	<div id="page" class="container">
+		<div id="main" class="col-sm-9 col-md-9 col-lg-9">
+			<div id="hist" class="well">
+				<span class="imginfo">Histogram Citra <a href="#" onclick="$('#hist').slideUp();return false;">(Close)</a></span>
+				<div id="bar-chart"></div>
+			</div>
+			<div class="gambar well">
+				<h2 class="imgtitle"><span>Citra Normal</span></h2>
+				<span class="imgbox"><canvas id="kanvas" /></span>
+			</div>
+		</div>
+		<div id="sidebar" class="col-sm-3 col-md-3 col-lg-3">
+			<div class="well light">
+				<div class="imginfo">
+					<div id="imgwidth"></div>
+					<div id="imgheight"></div>
+					<div id="imglength"></div>
+				</div>
+			</div>
+			<div class="well light">
+				Brightness:
+				<input id="inp-brightness" type="range" value="0" min="-100" max="100" step="5" style="width:100%">
+				Contrass:
+				<input id="inp-contrass" type="range" value="0" min="-30" max="30" style="width:100%">
+				Sharpen:
+				<input id="inp-sharp" type="range" value="0" min="0" max="30" style="width:100%">
+			</div>
+		</div>
+	</div><!-- /.container -->
+
+</body>
+<script type="text/javascript" src="js/jquery-1.11.1.min.js"></script>
+<script type="text/javascript" src="js/bootstrap.min.js"></script>
+
+<!-- jQuery Flot -->
+<script type="text/javascript" src="js/excanvas.min.js"></script>
+<script type="text/javascript" src="js/jquery.flot.js"></script>
+<script type="text/javascript" src="js/jquery.flot.resize.js"></script>
+<script type="text/javascript" src="js/jquery.flot.pie.js"></script>
+<script type="text/javascript" src="js/jquery.flot.stack.js"></script>
+<!-- End of jQuery Flot -->
+
+<!-- jCrop -->
+<script type="text/javascript" src="js/jquery.Jcrop.min.js"></script>
+<!-- End jCrop -->
+
+<script type="text/javascript" src="js/citra.js"></script>
+<script type="text/javascript">
+	$("#inp-brightness").change(function(){
+		// input number
+		var inp = $(this).val();
+
+		if ($(this).data('old-value') < $(this).val()) {
+            inp = -1 * inp; // alert('Alert up');
+        } else {
+            inp = 1 * inp; // alert('Alert down');
+        }
+
+		// reset image
+		ctx.drawImage(myImg, 0, 0);
+
+		// read img data
+		var imgData = ctx.getImageData(0, 0, cvs.width, cvs.height);
+
+		// manipulation
+		for (var i = 0; i < imgData.data.length; i+=4) {
+			imgData.data[i] = imgData.data[i] + inp;
+			if(imgData.data[i] < 0) imgData.data[i] = 0;
+			else if(imgData.data[i] > 255) imgData.data[i] = 255;
+
+			imgData.data[i+1] = imgData.data[i+1] + inp;
+			if(imgData.data[i+1] < 0) imgData.data[i+1] = 0;
+			else if(imgData.data[i+1] > 255) imgData.data[i+1] = 255;
+
+			imgData.data[i+2] = imgData.data[i+2] + inp;
+			if(imgData.data[i+2] < 0) imgData.data[i+2] = 0;
+			else if(imgData.data[i+2] > 255) imgData.data[i+2] = 255;
+		}
+
+		// show manipulation
+		ctx.putImageData(imgData, 0, 0);
+	});
+
+	$("#inp-contrass").change(function(){
+		// input number
+		var inp = $(this).val(), koef = .3;
+
+		if ($(this).data('old-value') < $(this).val()) {
+            inp = -1 * inp; // alert('Alert up');
+        } else {
+            inp = 1 * inp; // alert('Alert down');
+        }
+
+		// reset image
+		ctx.drawImage(myImg, 0, 0);
+
+		// read img data
+		var imgData = ctx.getImageData(0, 0, cvs.width, cvs.height);
+
+		// manipulation
+		for (var i = 0; i < imgData.data.length; i+=4) {
+			imgData.data[i] = (koef * (imgData.data[i] - inp)) + inp;
+			if(imgData.data[i] < 0) imgData.data[i] = 0;
+			else if(imgData.data[i] > 255) imgData.data[i] = 255;
+
+			imgData.data[i+1] = (koef * (imgData.data[i+1] - inp)) + inp;
+			if(imgData.data[i+1] < 0) imgData.data[i+1] = 0;
+			else if(imgData.data[i+1] > 255) imgData.data[i+1] = 255;
+
+			imgData.data[i+2] = (koef * (imgData.data[i+2] - inp)) + inp;
+			if(imgData.data[i+2] < 0) imgData.data[i+2] = 0;
+			else if(imgData.data[i+2] > 255) imgData.data[i+2] = 255;
+		}
+
+		// show manipulation
+		ctx.putImageData(imgData, 0, 0);
+	});
+
+	$("#inp-sharp").change(function(){
+	});
+
+/****************
+
+Notes:
+
+// Loop Through Image Pixels
+var imageData = context.getImageData(x, y, width, height);
+var data = imageData.data;
+var len = data.length;
+var i, red, green, blue, alpha;
+
+for(i = 0; i < len; i += 4) {
+  red = data[i];
+  green = data[i + 1];
+  blue = data[i + 2];
+  alpha = data[i + 3];
+}
+
+// Loop Through Image Pixels With Coordinates
+var imageData = context.getImageData(x, y, width, height);
+var data = imageData.data;
+var x, y, red, green, blue, alpha;
+
+for(y = 0; y < imageHeight; y++) {
+  for(x = 0; x < imageWidth; x++) {
+    red = data[((imageWidth * y) + x) * 4];
+    green = data[((imageWidth * y) + x) * 4 + 1];
+    blue = data[((imageWidth * y) + x) * 4 + 2];
+    alpha = data[((imageWidth * y) + x) * 4 + 3];
+  }
+}
+
+****************/
+</script>
+</html>
