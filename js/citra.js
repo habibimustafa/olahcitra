@@ -23,6 +23,8 @@ $(myImg).attr("src", "img/heroteesme.jpg");
 				$(myImg).attr("src", e.target.result);
 			}
 			reader.readAsDataURL(input.files[0]);
+			$('.ascii-box').remove();
+			$(cvs).show();
 		}
 	}
 
@@ -54,6 +56,8 @@ $(myImg).attr("src", "img/heroteesme.jpg");
 		$("#inp-brightness").val(0);
 		$("#inp-contrass").val(0);
 		$("#hist").hide();
+		$('.ascii-box').remove();
+		$(cvs).show();
 	}
 
 	/*
