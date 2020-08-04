@@ -492,6 +492,51 @@ $(myImg).attr("src", "img/heroteesme.jpg");
 
 	}
 
+	// Citra Solarize
+	function imgAscii(){
+
+		// ascii replacement
+		const asciiChars = "`^\",:;Il!i~+_-?][}{1)(|\\/tfjrxnuvczXYUJCLQ0OZmwqpdbkhao*#MW&8%B@$";
+
+		// load original image
+		ctx.drawImage(myImg, 0, 0);
+
+		// get image data
+		const imgData = ctx.getImageData(0, 0, cvs.width, cvs.height);
+
+		let asciiImg = [];
+
+		// manipulation
+		let j = 0;
+		for(let i=0; i < imgData.data.length; i +=4){
+			const red = imgData.data[i];
+			const green = imgData.data[i + 1];
+			const blue = imgData.data[i + 2];
+
+			const luminocity = Math.ceil(red * 0.21 + green * 0.72 + blue * 0.07);
+			const charIndex = Math.ceil(luminocity/(255/(asciiChars.length-1)));
+			const char = asciiChars.substr(charIndex, 1);
+
+			if (i%(cvs.width*4) === 0) {
+				asciiImg[++j] = [];
+			}
+
+			asciiImg[j].push(char);
+		}
+
+		let asciiHtml = '';
+		asciiImg.forEach((v) => {
+			asciiHtml += v.join('') + "<br/>";
+		});
+
+		// show manipulation
+		$(cvs).after(`<div class="ascii-box"><div class="img-ascii">${asciiHtml}</div></div>`)
+		$(cvs).hide()
+
+		// set title
+		$(".imgtitle span").text("Citra to Ascii");
+	}
+
 	/*
 	 *
 	 * Flipping
