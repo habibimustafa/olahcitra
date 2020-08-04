@@ -2,23 +2,23 @@
 
 	$(function() {
 	    $('.navbar .navbar-nav a').not('.dropdown-toggle').bind('click', function(event) {
-	        var $anchor = $(this).attr('href'),
-	        	$func   = $anchor.substr(1, $anchor.length);
+			const $anchor = $(this).attr('href'),
+				$func = $anchor.substr(1, $anchor.length);
 
-	        eval($func);
+			eval($func);
 	        return false;
 	    });
 	});
 
 
-	var cvs = document.getElementById("kanvas"),
-		ctx = cvs.getContext("2d"),
-		myImg = new Image();
-	$(myImg).attr("src", "img/heroteesme.jpg");
+const cvs = document.getElementById("kanvas"),
+	ctx = cvs.getContext("2d"),
+	myImg = new Image();
+$(myImg).attr("src", "img/heroteesme.jpg");
 
 	function readURL(input){
 		if(input.files && input.files[0]){
-			var reader =  new FileReader();
+			const reader = new FileReader();
 			reader.onload = function(e){
 				$(myImg).attr("src", e.target.result);
 			}
@@ -37,7 +37,7 @@
 		$("#inp-brightness").val(0);
 		$("#inp-contrass").val(0);
 
-		var imgData = ctx.getImageData(0, 0, cvs.width, cvs.height);
+		const imgData = ctx.getImageData(0, 0, cvs.width, cvs.height);
 		$("#imgwidth").text("Width: "+imgData.width+"px");
 		$("#imgheight").text("Height: "+imgData.height+"px");
 		$("#imglength").text("Length: "+imgData.data.length+"px");
@@ -65,22 +65,20 @@
 	 */
 
     function konvolusi3x3(inData, outData, width, height, kernel, alpha, invert, mono) {
-        var idx, r, g, b, a,
-            pyc, pyp, pyn,
-            pxc, pxp, pxn,
-            x, y,
+		let idx, r, g, b, a,
+			pyc, pyp, pyn,
+			pxc, pxp, pxn,
+			x, y;
+		const n = width * height * 4,
 
-            n = width * height * 4,
+			k00 = kernel[0][0], k01 = kernel[0][1], k02 = kernel[0][2],
+			k10 = kernel[1][0], k11 = kernel[1][1], k12 = kernel[1][2],
+			k20 = kernel[2][0], k21 = kernel[2][1], k22 = kernel[2][2];
+		let p00, p01, p02,
+			p10, p11, p12,
+			p20, p21, p22;
 
-            k00 = kernel[0][0], k01 = kernel[0][1], k02 = kernel[0][2],
-            k10 = kernel[1][0], k11 = kernel[1][1], k12 = kernel[1][2],
-            k20 = kernel[2][0], k21 = kernel[2][1], k22 = kernel[2][2],
-
-            p00, p01, p02,
-            p10, p11, p12,
-            p20, p21, p22;
-
-        for (y=0;y<height;++y) {
+		for (y=0;y<height;++y) {
             pyc = y * width * 4;
             pyp = pyc - width * 4;
             pyn = pyc + width * 4;
@@ -141,26 +139,24 @@
     }
 
     function konvolusi5x5(inData, outData, width, height, kernel, alpha, invert, mono) {
-        var idx, r, g, b, a,
-            pyc, pyp, pyn, pypp, pynn,
-            pxc, pxp, pxn, pxpp, pxnn,
-            x, y,
+		let idx, r, g, b, a,
+			pyc, pyp, pyn, pypp, pynn,
+			pxc, pxp, pxn, pxpp, pxnn,
+			x, y;
+		const n = width * height * 4,
 
-            n = width * height * 4,
+			k00 = kernel[0][0], k01 = kernel[0][1], k02 = kernel[0][2], k03 = kernel[0][3], k04 = kernel[0][4],
+			k10 = kernel[1][0], k11 = kernel[1][1], k12 = kernel[1][2], k13 = kernel[1][3], k14 = kernel[1][4],
+			k20 = kernel[2][0], k21 = kernel[2][1], k22 = kernel[2][2], k23 = kernel[2][3], k24 = kernel[2][4],
+			k30 = kernel[3][0], k31 = kernel[3][1], k32 = kernel[3][2], k33 = kernel[3][3], k34 = kernel[3][4],
+			k40 = kernel[4][0], k41 = kernel[4][1], k42 = kernel[4][2], k43 = kernel[4][3], k44 = kernel[4][4];
+		let p00, p01, p02, p03, p04,
+			p10, p11, p12, p13, p14,
+			p20, p21, p22, p23, p24,
+			p30, p31, p32, p33, p34,
+			p40, p41, p42, p43, p44;
 
-            k00 = kernel[0][0], k01 = kernel[0][1], k02 = kernel[0][2], k03 = kernel[0][3], k04 = kernel[0][4],
-            k10 = kernel[1][0], k11 = kernel[1][1], k12 = kernel[1][2], k13 = kernel[1][3], k14 = kernel[1][4],
-            k20 = kernel[2][0], k21 = kernel[2][1], k22 = kernel[2][2], k23 = kernel[2][3], k24 = kernel[2][4],
-            k30 = kernel[3][0], k31 = kernel[3][1], k32 = kernel[3][2], k33 = kernel[3][3], k34 = kernel[3][4],
-            k40 = kernel[4][0], k41 = kernel[4][1], k42 = kernel[4][2], k43 = kernel[4][3], k44 = kernel[4][4],
-
-            p00, p01, p02, p03, p04,
-            p10, p11, p12, p13, p14,
-            p20, p21, p22, p23, p24,
-            p30, p31, p32, p33, p34,
-            p40, p41, p42, p43, p44;
-
-        for (y=0;y<height;++y) {
+		for (y=0;y<height;++y) {
             pyc = y * width * 4;
             pyp = pyc - width * 4;
             pypp = pyc - width * 4 * 2;
@@ -259,10 +255,10 @@
 		ctx.drawImage(myImg, 0, 0);
 
 		// get image data
-		var imgData = ctx.getImageData(0, 0, cvs.width, cvs.height);
+		const imgData = ctx.getImageData(0, 0, cvs.width, cvs.height);
 
 		// manipulation
-		for(var i=0; i < imgData.data.length; i +=4){
+		for(let i=0; i < imgData.data.length; i +=4){
 			imgData.data[i] = 255 - imgData.data[i] | 0;
 			imgData.data[i+1] = 255 - imgData.data[i+1] | 0;
 			imgData.data[i+2] = 255 - imgData.data[i+2] | 0;
@@ -283,12 +279,12 @@
 		ctx.drawImage(myImg, 0, 0);
 
 		// get image data
-		var imgData = ctx.getImageData(0, 0, cvs.width, cvs.height);
+		const imgData = ctx.getImageData(0, 0, cvs.width, cvs.height);
 
 		// manipulation
-		for(var i=0; i < imgData.data.length; i +=4){
+		for(let i=0; i < imgData.data.length; i +=4){
 			// var gr = (imgData.data[i] + imgData.data[i+1] + imgData.data[i+2]) / 3;
-			var gr = imgData.data[i] * 0.299 + imgData.data[i+1] * 0.587 + imgData.data[i+2] * 0.114;
+			let gr = imgData.data[i] * 0.299 + imgData.data[i + 1] * 0.587 + imgData.data[i + 2] * 0.114;
 			if(gr < 0) gr = 0;
 			if(gr > 255) gr = 255;
 			imgData.data[i] = gr;
@@ -311,11 +307,11 @@
 		ctx.drawImage(myImg, 0, 0);
 
 		// get image data
-		var imgData = ctx.getImageData(0, 0, cvs.width, cvs.height);
+		const imgData = ctx.getImageData(0, 0, cvs.width, cvs.height);
 
 		// manipulation
-		for(var i=0; i < imgData.data.length; i +=4){
-			var gr = (imgData.data[i] + imgData.data[i+1] + imgData.data[i+2]) / 3;
+		for(let i=0; i < imgData.data.length; i +=4){
+			let gr = (imgData.data[i] + imgData.data[i + 1] + imgData.data[i + 2]) / 3;
 			if(gr <= 128) gr = 0;
 			if(gr > 128) gr = 255;
 			imgData.data[i] = gr;
@@ -338,11 +334,11 @@
 		// ctx.drawImage(myImg, 0, 0);
 
 		// get image data
-		var imgData = ctx.getImageData(0, 0, cvs.width, cvs.height);
+		const imgData = ctx.getImageData(0, 0, cvs.width, cvs.height);
 
 		// manipulation
-		for(var i=0; i < imgData.data.length; i +=4){
-			var gr = imgData.data[i];
+		for(let i=0; i < imgData.data.length; i +=4){
+			const gr = imgData.data[i];
 			imgData.data[i] = (gr == 0)? 255 : 0;
 			imgData.data[i+1] = (gr == 0)? 255 : 0;
 			imgData.data[i+2] = (gr == 0)? 255 : 0;
@@ -364,11 +360,11 @@
 		imgBinary();
 
 		// get image data
-		var imgData = ctx.getImageData(0, 0, cvs.width, cvs.height);
+		const imgData = ctx.getImageData(0, 0, cvs.width, cvs.height);
 
 		// manipulation
-		for(var i=0; i < imgData.data.length; i +=4){
-			var gr = imgData.data[i];
+		for(let i=0; i < imgData.data.length; i +=4){
+			const gr = imgData.data[i];
 			imgData.data[i] = (gr == 0)? 255 : 0;
 			imgData.data[i+1] = 0;
 			imgData.data[i+2] = 0;
@@ -390,11 +386,11 @@
 		imgBinary();
 
 		// get image data
-		var imgData = ctx.getImageData(0, 0, cvs.width, cvs.height);
+		const imgData = ctx.getImageData(0, 0, cvs.width, cvs.height);
 
 		// manipulation
-		for(var i=0; i < imgData.data.length; i +=4){
-			var gr = imgData.data[i+1];
+		for(let i=0; i < imgData.data.length; i +=4){
+			const gr = imgData.data[i + 1];
 			imgData.data[i] = 0;
 			imgData.data[i+1] = (gr == 0)? 255 : 0;
 			imgData.data[i+2] = 0;
@@ -416,11 +412,11 @@
 		imgBinary();
 
 		// get image data
-		var imgData = ctx.getImageData(0, 0, cvs.width, cvs.height);
+		const imgData = ctx.getImageData(0, 0, cvs.width, cvs.height);
 
 		// manipulation
-		for(var i=0; i < imgData.data.length; i +=4){
-			var gr = imgData.data[i+2];
+		for(let i=0; i < imgData.data.length; i +=4){
+			const gr = imgData.data[i + 2];
 			imgData.data[i] = 0;
 			imgData.data[i+1] = 0;
 			imgData.data[i+2] = (gr == 0)? 255 : 0;
@@ -441,15 +437,15 @@
 		ctx.drawImage(myImg, 0, 0);
 
 		// get image data
-		var imgData = ctx.getImageData(0, 0, cvs.width, cvs.height);
+		const imgData = ctx.getImageData(0, 0, cvs.width, cvs.height);
 
 		// manipulation
-		for(var i=0; i < imgData.data.length; i +=4){
-	        var red = imgData.data[i];
-	        var green = imgData.data[i+1];
-	        var blue = imgData.data[i+2];
+		for(let i=0; i < imgData.data.length; i +=4){
+			let red = imgData.data[i];
+			let green = imgData.data[i + 1];
+			let blue = imgData.data[i + 2];
 
-	        red = (red * 0.393) + (green * 0.769) + (blue * 0.189);
+			red = (red * 0.393) + (green * 0.769) + (blue * 0.189);
 	        green = (red * 0.349) + (green * 0.686) + (blue * 0.168);
 	        blue = (red * 0.272) + (green * 0.534) + (blue * 0.131);
 
@@ -474,15 +470,15 @@
 		ctx.drawImage(myImg, 0, 0);
 
 		// get image data
-		var imgData = ctx.getImageData(0, 0, cvs.width, cvs.height);
+		const imgData = ctx.getImageData(0, 0, cvs.width, cvs.height);
 
 		// manipulation
-		for(var i=0; i < imgData.data.length; i +=4){
-	        var red   = imgData.data[i];
-	        var green = imgData.data[i+1];
-	        var blue  = imgData.data[i+2];
+		for(let i=0; i < imgData.data.length; i +=4){
+			const red = imgData.data[i];
+			const green = imgData.data[i + 1];
+			const blue = imgData.data[i + 2];
 
-	        imgData.data[i]   = red > 127 ? 255 - red : red;
+			imgData.data[i]   = red > 127 ? 255 - red : red;
 	        imgData.data[i+1] = green > 127 ? 255 - green : green;
 	        imgData.data[i+2] = blue > 127 ? 255 - blue : blue;
 
@@ -512,7 +508,7 @@
 		// ctx.drawImage(myImg, 0, 0);
 
 		// read img data
-		var imgData = ctx.getImageData(0, 0, cvs.width, cvs.height);
+		const imgData = ctx.getImageData(0, 0, cvs.width, cvs.height);
 		var x, y, i, j,
 			iWidth 	= imgData.width,
 			iHeight = imgData.height;
@@ -521,12 +517,12 @@
 		for(y = 0; y < (iHeight/2); y++) {
 		  var i = iHeight - 1 - y;
 		  for(x = 0; x < iWidth; x++) {
-		  	var pixel  = ((iWidth * y) + x) * 4,
-		  		mirror = ((iWidth * i) + x) * 4;
+			  const pixel = ((iWidth * y) + x) * 4,
+				  mirror = ((iWidth * i) + x) * 4;
 
-		  	for (var p=0; p<4; p++) {
-			  	var temporary  = imgData.data[pixel + p];
-			  	imgData.data[pixel + p] = imgData.data[mirror + p];
+			  for (let p=0; p<4; p++) {
+				const temporary = imgData.data[pixel + p];
+				imgData.data[pixel + p] = imgData.data[mirror + p];
 			  	imgData.data[mirror + p] = temporary;
 		  	};
 		  }
@@ -547,7 +543,7 @@
 		// ctx.drawImage(myImg, 0, 0);
 
 		// read img data
-		var imgData = ctx.getImageData(0, 0, cvs.width, cvs.height);
+		const imgData = ctx.getImageData(0, 0, cvs.width, cvs.height);
 		var x, y, i, j,
 			iWidth 	= imgData.width,
 			iHeight = imgData.height;
@@ -556,12 +552,12 @@
 		for(y = 0; y < iHeight; y++) {
 		  for(x = 0; x < (iWidth/2); x++) {
 		  	var j = iWidth - 1 - x;
-		  	var pixel  = ((iWidth * y) + x) * 4,
-		  		mirror = ((iWidth * y) + j) * 4;
+			  const pixel = ((iWidth * y) + x) * 4,
+				  mirror = ((iWidth * y) + j) * 4;
 
-		  	for (var p=0; p<4; p++) {
-			  	var temporary  = imgData.data[pixel + p];
-			  	imgData.data[pixel + p] = imgData.data[mirror + p];
+			  for (let p=0; p<4; p++) {
+				const temporary = imgData.data[pixel + p];
+				imgData.data[pixel + p] = imgData.data[mirror + p];
 			  	imgData.data[mirror + p] = temporary;
 		  	};
 		  }
@@ -582,7 +578,7 @@
 		// ctx.drawImage(myImg, 0, 0);
 
 		// read img data
-		var imgData = ctx.getImageData(0, 0, cvs.width, cvs.height);
+		const imgData = ctx.getImageData(0, 0, cvs.width, cvs.height);
 		var x, y, i, j,
 			iWidth 	= imgData.width,
 			iHeight = imgData.height;
@@ -592,12 +588,12 @@
 		  var i = iHeight - 1 - y;
 		  for(x = 0; x < (iWidth/2); x++) {
 		  	var j = iWidth - 1 - x;
-		  	var pixel  = ((iWidth * y) + x) * 4,
-		  		mirror = ((iWidth * i) + j) * 4;
+			  const pixel = ((iWidth * y) + x) * 4,
+				  mirror = ((iWidth * i) + j) * 4;
 
-		  	for (var p=0; p<4; p++) {
-			  	var temporary  = imgData.data[pixel + p];
-			  	imgData.data[pixel + p] = imgData.data[mirror + p];
+			  for (let p=0; p<4; p++) {
+				const temporary = imgData.data[pixel + p];
+				imgData.data[pixel + p] = imgData.data[mirror + p];
 			  	imgData.data[mirror + p] = temporary;
 		  	};
 		  }
@@ -627,9 +623,10 @@
 		imgGrayscale();
 
 		// read img data
-		var imgData = ctx.getImageData(0, 0, cvs.width, cvs.height);
-		var p, i, j, tempR = temp = imgData.data;
-			iWidth 	= imgData.width, iHeight = imgData.height;
+		const imgData = ctx.getImageData(0, 0, cvs.width, cvs.height);
+		let p, i, j;
+		const tempR = temp = imgData.data;
+		iWidth 	= imgData.width, iHeight = imgData.height;
 
 		// manipulation
 		for(i = 0; i < (iHeight-1); i++) {
@@ -663,9 +660,10 @@
 		// imgGrayscale();
 
 		// read img data
-		var imgData = ctx.getImageData(0, 0, cvs.width, cvs.height);
-		var p, i, j, tempR = temp = imgData.data
-			iWidth 	= imgData.width, iHeight = imgData.height;
+		const imgData = ctx.getImageData(0, 0, cvs.width, cvs.height);
+		let p, i, j;
+		const tempR = temp = imgData.data;
+		iWidth 	= imgData.width, iHeight = imgData.height;
 
 		// manipulation
 		for(i = 0; i < (iHeight-1); i++) {
@@ -673,26 +671,26 @@
 
 		  	for (p=0; p<3; p++) { // p adalah penentu pixel r, g b
 
-		  		var sx =
-			  		(temp[((iWidth * (i-1)) + (j-1)) * 4 + p] * (-1)) +
-			  		(temp[((iWidth * (i+0)) + (j-1)) * 4 + p] * (-2)) +
-			  		(temp[((iWidth * (i+1)) + (j-1)) * 4 + p] * (-1)) +
+				const sx =
+					(temp[((iWidth * (i - 1)) + (j - 1)) * 4 + p] * (-1)) +
+					(temp[((iWidth * (i + 0)) + (j - 1)) * 4 + p] * (-2)) +
+					(temp[((iWidth * (i + 1)) + (j - 1)) * 4 + p] * (-1)) +
 
-			  		(temp[((iWidth * (i-1)) + (j+1)) * 4 + p] * (1)) +
-			  		(temp[((iWidth * (i+0)) + (j+1)) * 4 + p] * (2)) +
-			  		(temp[((iWidth * (i+1)) + (j+1)) * 4 + p] * (1));
+					(temp[((iWidth * (i - 1)) + (j + 1)) * 4 + p] * (1)) +
+					(temp[((iWidth * (i + 0)) + (j + 1)) * 4 + p] * (2)) +
+					(temp[((iWidth * (i + 1)) + (j + 1)) * 4 + p] * (1));
 
-			  	var sy =
-			  		(temp[((iWidth * (i-1)) + (j-1)) * 4 + p] * (1)) +
-			  		(temp[((iWidth * (i-1)) + (j+0)) * 4 + p] * (2)) +
-			  		(temp[((iWidth * (i-1)) + (j+1)) * 4 + p] * (1)) +
+				const sy =
+					(temp[((iWidth * (i - 1)) + (j - 1)) * 4 + p] * (1)) +
+					(temp[((iWidth * (i - 1)) + (j + 0)) * 4 + p] * (2)) +
+					(temp[((iWidth * (i - 1)) + (j + 1)) * 4 + p] * (1)) +
 
-			  		(temp[((iWidth * (i+1)) + (j-1)) * 4 + p] * (-1)) +
-			  		(temp[((iWidth * (i+1)) + (j+0)) * 4 + p] * (-2)) +
-			  		(temp[((iWidth * (i+1)) + (j+1)) * 4 + p] * (-1));
+					(temp[((iWidth * (i + 1)) + (j - 1)) * 4 + p] * (-1)) +
+					(temp[((iWidth * (i + 1)) + (j + 0)) * 4 + p] * (-2)) +
+					(temp[((iWidth * (i + 1)) + (j + 1)) * 4 + p] * (-1));
 
-			  	var hit = 255 - (Math.abs(sx) + Math.abs(sy));
-			  	tempR[((iWidth * i) + j) * 4 + p] = hit;
+				const hit = 255 - (Math.abs(sx) + Math.abs(sy));
+				tempR[((iWidth * i) + j) * 4 + p] = hit;
 
 		  	}
 
@@ -715,9 +713,10 @@
 		imgGrayscale();
 
 		// read img data
-		var imgData = ctx.getImageData(0, 0, cvs.width, cvs.height);
-		var p, i, j, tempR = temp = imgData.data;
-			iWidth 	= imgData.width, iHeight = imgData.height;
+		const imgData = ctx.getImageData(0, 0, cvs.width, cvs.height);
+		let p, i, j;
+		const tempR = temp = imgData.data;
+		iWidth 	= imgData.width, iHeight = imgData.height;
 
 		// manipulation
 		for(i = 0; i < (iHeight-1); i++) {
@@ -725,26 +724,26 @@
 
 		  	for (p=0; p<3; p++) { // p adalah penentu pixel r, g b
 
-		  		var sx =
-			  		(temp[((iWidth * (i-1)) + (j-1)) * 4 + p] * (-1)) +
-			  		(temp[((iWidth * (i+0)) + (j-1)) * 4 + p] * (-1)) +
-			  		(temp[((iWidth * (i+1)) + (j-1)) * 4 + p] * (-1)) +
+				const sx =
+					(temp[((iWidth * (i - 1)) + (j - 1)) * 4 + p] * (-1)) +
+					(temp[((iWidth * (i + 0)) + (j - 1)) * 4 + p] * (-1)) +
+					(temp[((iWidth * (i + 1)) + (j - 1)) * 4 + p] * (-1)) +
 
-			  		(temp[((iWidth * (i-1)) + (j+1)) * 4 + p] * (1)) +
-			  		(temp[((iWidth * (i+0)) + (j+1)) * 4 + p] * (1)) +
-			  		(temp[((iWidth * (i+1)) + (j+1)) * 4 + p] * (1));
+					(temp[((iWidth * (i - 1)) + (j + 1)) * 4 + p] * (1)) +
+					(temp[((iWidth * (i + 0)) + (j + 1)) * 4 + p] * (1)) +
+					(temp[((iWidth * (i + 1)) + (j + 1)) * 4 + p] * (1));
 
-			  	var sy =
-			  		(temp[((iWidth * (i-1)) + (j-1)) * 4 + p] * (1)) +
-			  		(temp[((iWidth * (i-1)) + (j+0)) * 4 + p] * (1)) +
-			  		(temp[((iWidth * (i-1)) + (j+1)) * 4 + p] * (1)) +
+				const sy =
+					(temp[((iWidth * (i - 1)) + (j - 1)) * 4 + p] * (1)) +
+					(temp[((iWidth * (i - 1)) + (j + 0)) * 4 + p] * (1)) +
+					(temp[((iWidth * (i - 1)) + (j + 1)) * 4 + p] * (1)) +
 
-			  		(temp[((iWidth * (i+1)) + (j-1)) * 4 + p] * (-1)) +
-			  		(temp[((iWidth * (i+1)) + (j+0)) * 4 + p] * (-1)) +
-			  		(temp[((iWidth * (i+1)) + (j+1)) * 4 + p] * (-1));
+					(temp[((iWidth * (i + 1)) + (j - 1)) * 4 + p] * (-1)) +
+					(temp[((iWidth * (i + 1)) + (j + 0)) * 4 + p] * (-1)) +
+					(temp[((iWidth * (i + 1)) + (j + 1)) * 4 + p] * (-1));
 
-			  	var hit = 255 - (Math.abs(sx) + Math.abs(sy));
-			  	tempR[((iWidth * i) + j) * 4 + p] = hit;
+				const hit = 255 - (Math.abs(sx) + Math.abs(sy));
+				tempR[((iWidth * i) + j) * 4 + p] = hit;
 
 		  	}
 
@@ -776,29 +775,29 @@
 	    if (radius < 1)
 	        console.log("radius must be greater than 0");
 
-	    var r = radius,
-	    	rs = Math.ceil(r * 2.57); // significant radius
+		const r = radius,
+			rs = Math.ceil(r * 2.57); // significant radius
 
 		// read img data
-		var imgData = ctx.getImageData(0, 0, cvs.width, cvs.height);
-		var temp = imgData.data, iWidth 	= imgData.width, iHeight = imgData.height;
+		const imgData = ctx.getImageData(0, 0, cvs.width, cvs.height);
+		const temp = imgData.data, iWidth = imgData.width, iHeight = imgData.height;
 
 		// manipulation
-	    for (var y = 0; y < iHeight; y++) {
+	    for (let y = 0; y < iHeight; y++) {
 	        // console.log("Gaussian: " + Math.round(y / iHeight * 100) + "%");
-	        for (var x = 0; x < iWidth; x++) {
-	            var red = 0;
-	            var green = 0;
-	            var blue = 0;
-	            var alpha = 0;
-	            var wsum = 0;
-	            for (var iy = y - rs; iy < y + rs + 1; iy++) {
-	                for (var ix = x - rs; ix < x + rs + 1; ix++) {
-	                    var x1 = Math.min(iWidth - 1, Math.max(0, ix));
-	                    var y1 = Math.min(iHeight - 1, Math.max(0, iy));
-	                    var dsq = (ix - x) * (ix - x) + (iy - y) * (iy - y);
-	                    var wght = Math.exp( -dsq / (2*r*r) ) / (Math.PI*2*r*r);
-	                    var idx = (y1 * iWidth + x1) << 2;
+	        for (let x = 0; x < iWidth; x++) {
+				let red = 0;
+				let green = 0;
+				let blue = 0;
+				let alpha = 0;
+				let wsum = 0;
+				for (let iy = y - rs; iy < y + rs + 1; iy++) {
+	                for (let ix = x - rs; ix < x + rs + 1; ix++) {
+						const x1 = Math.min(iWidth - 1, Math.max(0, ix));
+						const y1 = Math.min(iHeight - 1, Math.max(0, iy));
+						const dsq = (ix - x) * (ix - x) + (iy - y) * (iy - y);
+						const wght = Math.exp(-dsq / (2 * r * r)) / (Math.PI * 2 * r * r);
+						var idx = (y1 * iWidth + x1) << 2;
 	                    red += temp[idx] * wght;
 	                    green += temp[idx+1] * wght;
 	                    blue += temp[idx+2] * wght;
@@ -828,10 +827,10 @@
 	function filter_sharpen(){
 
 		// read img data
-		var imgData = ctx.getImageData(0, 0, cvs.width, cvs.height);
-		var temp = imgData.data, iWidth = imgData.width, iHeight = imgData.height;
+		const imgData = ctx.getImageData(0, 0, cvs.width, cvs.height);
+		const temp = imgData.data, iWidth = imgData.width, iHeight = imgData.height;
 
-		var a = 0.3;
+		const a = 0.3;
 		konvolusi3x3(
 			imgData.data, temp, iWidth, iHeight,
 			[
@@ -853,10 +852,10 @@
 	function filter_soften(){
 
 		// read img data
-		var imgData = ctx.getImageData(0, 0, cvs.width, cvs.height);
-		var temp = imgData.data, iWidth = imgData.width, iHeight = imgData.height;
+		const imgData = ctx.getImageData(0, 0, cvs.width, cvs.height);
+		const temp = imgData.data, iWidth = imgData.width, iHeight = imgData.height;
 
-		var c = 1/9;
+		const c = 1 / 9;
 		konvolusi3x3(
 			imgData.data, temp, iWidth, iHeight,
 			[
@@ -891,9 +890,9 @@
 		// ctx.drawImage(myImg, 0, 0);
 
 		// read img data
-		var imgData = ctx.getImageData(0, 0, cvs.width, cvs.height);
-		var hist = {"red":[], "green":[], "blue":[]};
-		var pr = [], prrk = {"red":[], "green":[], "blue":[]};
+		const imgData = ctx.getImageData(0, 0, cvs.width, cvs.height);
+		const hist = {"red": [], "green": [], "blue": []};
+		const pr = [], prrk = {"red": [], "green": [], "blue": []};
 		for(var n=0; n <= 255; n++){
 			hist.red.push(0); hist.green.push(0); hist.blue.push(0);
 			prrk.red.push(0); prrk.green.push(0); prrk.blue.push(0);
@@ -921,19 +920,19 @@
 
 		/* Bar Chart starts */
 
-		var d1 = [];
+		const d1 = [];
 		for (i = 0; i <= 255; i += 1)
 			d1.push([i, hist.red[i]]);
 
-		var d2 = [];
+		const d2 = [];
 		for (i = 0; i <= 255; i += 1)
 			d2.push([i, hist.green[i]]);
 
-		var d3 = [];
+		const d3 = [];
 		for (i = 0; i <= 255; i += 1)
 			d3.push([i, hist.blue[i]]);
 
-		var stack = 0, bars = true, lines = false, steps = false;
+		let stack = 0, bars = true, lines = false, steps = false;
 
 		function plotWithOptions() {
 			$.plot($("#bar-chart"), [ d1, d2, d3 ], {
