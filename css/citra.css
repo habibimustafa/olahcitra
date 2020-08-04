@@ -56,3 +56,13 @@ body  {
     font-weight: bold;
     font-size: 14px;
 }
+
+.ascii-box {
+    transform: scale(2);
+}
+
+.img-ascii {
+    font-family: 'Ubuntu Mono', monospace;
+    font-size: 2px;
+    transform: scale(1, 0.5);
+}
