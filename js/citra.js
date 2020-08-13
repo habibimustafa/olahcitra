@@ -604,6 +604,8 @@ const videoAscii = () => {
     $(cvs).after(`<div class="ascii-box"><div class="img-ascii"></div></div>`);
     $(cvs).hide();
 
+    $(".imgtitle span").text("Video to Ascii");
+
     setInterval(() => {
         kanvas.width = video.videoWidth;
         kanvas.height = video.videoHeight;
