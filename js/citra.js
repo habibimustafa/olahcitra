@@ -70,11 +70,11 @@ const loadCamera = () => {
         console.log(err);
     });
 
-    intervalVideoAsli = setInterval(function() {
+    let intervalVideoAsli = setInterval(function() {
         kanvas.width = video.videoWidth;
         kanvas.height = video.videoHeight;
         ctx.drawImage(video, 0, 0);
-    }, Math.round(1000 / 30));
+    }, Math.round(1000 / 120));
 }
 
 //  Reset
@@ -645,7 +645,7 @@ const videoAscii = () => {
         });
 
         $('.img-ascii').html(`${asciiHtml}`);
-    }, Math.round(1000 / 30));
+    }, Math.round(1000 / 120));
 }
 
 /*
