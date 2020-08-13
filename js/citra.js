@@ -69,11 +69,12 @@ const loadCamera = () => {
     }, (err) => {
         console.log(err);
     });
-    video.onprogress = () => {
+
+    intervalVideoAsli = setInterval(function() {
         kanvas.width = video.videoWidth;
         kanvas.height = video.videoHeight;
         ctx.drawImage(video, 0, 0);
-    }
+    }, Math.round(1000 / 30));
 }
 
 //  Reset
@@ -597,16 +598,21 @@ const imgAscii = () => {
 };
 
 const videoAscii = () => {
+    clearInterval(intervalVideoAsli);
+
     $('.ascii-box').remove();
     $(cvs).after(`<div class="ascii-box"><div class="img-ascii"></div></div>`);
     $(cvs).hide();
-    video.onprogress = () => {
+
+    setInterval(() => {
         kanvas.width = video.videoWidth;
         kanvas.height = video.videoHeight;
 
         ctx.drawImage(video, 0, 0);
 
-        const asciiChars = "`^\",:;Il!i~+_-?][}{1)(|\\/tfjrxnuvczXYUJCLQ0OZmwqpdbkhao*#MW&8%B@$";
+        // const asciiChars = "`^\",:;Il!i~+_-?][}{1)(|\\/tfjrxnuvczXYUJCLQ0OZmwqpdbkhao*#MW&8%B@$";
+        // const asciiChars = "@#8&Oo:._";
+        const asciiChars = "_.,:;i1tfLCG08@".split('').reverse().join('');
         const imgData = ctx.getImageData(0, 0, cvs.width, cvs.height);
         let asciiImg = [];
 
@@ -616,6 +622,7 @@ const videoAscii = () => {
             const red = imgData.data[i];
             const green = imgData.data[i + 1];
             const blue = imgData.data[i + 2];
+            const alpha = imgData.data[i + 3];
 
             const luminocity = Math.ceil(red * 0.21 + green * 0.72 + blue * 0.07);
             const charIndex = Math.ceil(luminocity / (255 / (asciiChars.length - 1)));
@@ -625,6 +632,7 @@ const videoAscii = () => {
                 asciiImg[++j] = [];
             }
 
+            // asciiImg[j].push(`<span style="color:rgba(${red}, ${green}, ${blue}, ${alpha})">${char}</span>`);
             asciiImg[j].push(char);
         }
 
@@ -635,7 +643,7 @@ const videoAscii = () => {
         });
 
         $('.img-ascii').html(`${asciiHtml}`);
-    }
+    }, Math.round(1000 / 30));
 }
 
 /*
