@@ -47,6 +47,34 @@ $(myImg).load(function () {
     $(".imgtitle span").text("Citra Asli");
 });
 
+const loadCamera = () => {
+    navigator.getUserMedia = (navigator.getUserMedia ||
+        navigator.webkitGetUserMedia ||
+        navigator.mozGetUserMedia ||
+        navigator.msGetUserMedia ||
+        navigator.mediaDevices.getUserMedia
+    );
+    const video = document.querySelector('video');
+    navigator.getUserMedia({
+        audio: false,
+        video: {
+            width: 255 || cvs.offsetWidth,
+            // height: cvs.offsetHeight
+        }
+    }, (stream) => {
+        video.srcObject = stream;
+        video.play();
+        kanvas.width = video.videoWidth;
+        kanvas.height = video.videoHeight;
+    }, (err) => {
+        console.log(err);
+    });
+    video.onprogress = () => {
+        kanvas.width = video.videoWidth;
+        kanvas.height = video.videoHeight;
+        ctx.drawImage(video, 0, 0);
+    }
+}
 
 //  Reset
 const imgReset = () => {
@@ -567,6 +595,48 @@ const imgAscii = () => {
     // set title
     $(".imgtitle span").text("Citra to Ascii");
 };
+
+const videoAscii = () => {
+    $('.ascii-box').remove();
+    $(cvs).after(`<div class="ascii-box"><div class="img-ascii"></div></div>`);
+    $(cvs).hide();
+    video.onprogress = () => {
+        kanvas.width = video.videoWidth;
+        kanvas.height = video.videoHeight;
+
+        ctx.drawImage(video, 0, 0);
+
+        const asciiChars = "`^\",:;Il!i~+_-?][}{1)(|\\/tfjrxnuvczXYUJCLQ0OZmwqpdbkhao*#MW&8%B@$";
+        const imgData = ctx.getImageData(0, 0, cvs.width, cvs.height);
+        let asciiImg = [];
+
+        // manipulation
+        let j = 0;
+        for (let i = 0; i < imgData.data.length; i += 4) {
+            const red = imgData.data[i];
+            const green = imgData.data[i + 1];
+            const blue = imgData.data[i + 2];
+
+            const luminocity = Math.ceil(red * 0.21 + green * 0.72 + blue * 0.07);
+            const charIndex = Math.ceil(luminocity / (255 / (asciiChars.length - 1)));
+            const char = asciiChars.substr(charIndex, 1);
+
+            if (i % (cvs.width * 4) === 0) {
+                asciiImg[++j] = [];
+            }
+
+            asciiImg[j].push(char);
+        }
+
+        let asciiHtml = '';
+
+        asciiImg.forEach((v) => {
+            asciiHtml += v.join('') + "<br/>";
+        });
+
+        $('.img-ascii').html(`${asciiHtml}`);
+    }
+}
 
 /*
  *
