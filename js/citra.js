@@ -15,6 +15,8 @@ const cvs = document.getElementById("kanvas"),
     ctx = cvs.getContext("2d"),
     myImg = new Image();
 
+let frameVideo;
+
 $(myImg).attr("src", "img/heroteesme.jpg");
 
 const readURL = input => {
@@ -70,11 +72,14 @@ const loadCamera = () => {
         console.log(err);
     });
 
-    let intervalVideoAsli = setInterval(function() {
+    frameVideo = () => {
         kanvas.width = video.videoWidth;
         kanvas.height = video.videoHeight;
         ctx.drawImage(video, 0, 0);
-    }, Math.round(1000 / 120));
+        requestAnimationFrame(frameVideo)
+    }
+
+    requestAnimationFrame(frameVideo)
 }
 
 //  Reset
@@ -598,7 +603,7 @@ const imgAscii = () => {
 };
 
 const videoAscii = () => {
-    clearInterval(intervalVideoAsli);
+    cancelAnimationFrame(frameVideo);
 
     $('.ascii-box').remove();
     $(cvs).after(`<div class="ascii-box"><div class="img-ascii"></div></div>`);
@@ -606,7 +611,7 @@ const videoAscii = () => {
 
     $(".imgtitle span").text("Video to Ascii");
 
-    setInterval(() => {
+    frameVideo = () => {
         kanvas.width = video.videoWidth;
         kanvas.height = video.videoHeight;
 
@@ -615,6 +620,7 @@ const videoAscii = () => {
         // const asciiChars = "`^\",:;Il!i~+_-?][}{1)(|\\/tfjrxnuvczXYUJCLQ0OZmwqpdbkhao*#MW&8%B@$";
         // const asciiChars = "@#8&Oo:._";
         const asciiChars = "_.,:;i1tfLCG08@".split('').reverse().join('');
+        const asciiCharsAlpaMapper = 255 / (asciiChars.length - 1);
         const imgData = ctx.getImageData(0, 0, cvs.width, cvs.height);
         let asciiImg = [];
 
@@ -627,25 +633,24 @@ const videoAscii = () => {
             const alpha = imgData.data[i + 3];
 
             const luminocity = Math.ceil(red * 0.21 + green * 0.72 + blue * 0.07);
-            const charIndex = Math.ceil(luminocity / (255 / (asciiChars.length - 1)));
+            const charIndex = Math.ceil(luminocity / asciiCharsAlpaMapper);
             const char = asciiChars.substr(charIndex, 1);
 
             if (i % (cvs.width * 4) === 0) {
                 asciiImg[++j] = [];
             }
 
-            // asciiImg[j].push(`<span style="color:rgba(${red}, ${green}, ${blue}, ${alpha})">${char}</span>`);
+            // asciiImg[j].push(`<span style="background-color:rgba(${red}, ${green}, ${blue}, ${alpha})">${char}</span>`);
             asciiImg[j].push(char);
         }
 
         let asciiHtml = '';
+        asciiImg.forEach(v => asciiHtml += v.join('') + "<br/>");
+        document.querySelector('.img-ascii').innerHTML = asciiHtml;
+        requestAnimationFrame(frameVideo);
+    }
 
-        asciiImg.forEach((v) => {
-            asciiHtml += v.join('') + "<br/>";
-        });
-
-        $('.img-ascii').html(`${asciiHtml}`);
-    }, Math.round(1000 / 120));
+    requestAnimationFrame(frameVideo);
 }
 
 /*
